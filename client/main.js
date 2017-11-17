@@ -6,12 +6,12 @@ import { Tracker } from 'meteor/tracker';
 import { Players } from './../imports/api/players';
 
 
-const renderPlayers = function(playerList) {
-  return playerList.map(player => 
+const renderPlayers = function (playerList) {
+  return playerList.map(player =>
   <p key={player._id}>{player.name}! has {player.score} point(s)</p>);
 };
 
-const handleSubmit = function(e) {
+const handleSubmit = function (e) {
   const playerName = e.target.playerName.value;
   e.preventDefault();
 
@@ -19,9 +19,8 @@ const handleSubmit = function(e) {
     e.target.playerName.target = '';
     Players.insert({
       name: playerName,
-      score: 44,
+      score: 0,
     });
-    // players insert
   }
 };
 
@@ -45,11 +44,5 @@ Meteor.startup(() => {
       </div>
     );
     ReactDOM.render(jsx, document.getElementById('app'));
-  });
-  // Insert new doc into the player's collection
-  // client shows top position... DDP issue
-  Players.insert({
-    name: 'rocky',
-    score: 99,
   });
 });
