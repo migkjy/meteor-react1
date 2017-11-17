@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+import { Players } from './../imports/api/players';
 // import './../imports/utils.js';
-import anyDefaultValue, { greetUser } from './../imports/utils';
-// .js can be ommited
 
 Meteor.startup(() => {
-  console.log('Log from /server/main.js');
-  console.log(greetUser(), anyDefaultValue);
+  Players.insert({
+    name: 'vikram',
+    score: 99,
+  });
+  console.log(Players.find().fetch());
 });

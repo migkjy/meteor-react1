@@ -1,41 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom'; // import a package from npm
 import { Meteor } from 'meteor/meteor'; // import a package from meteor
+import { Tracker } from 'meteor/tracker';
 
-const players = [{
-  _id: '1',
-  name: 'Lauren',
-  score: 99,
-}, {
-  _id: '2',
-  name: 'Cory',
-  score: -1,
-}, {
-  _id: '303',
-  name: 'Andrew',
-  score: -12,
-}];
+import { Players } from './../imports/api/players';
 
-const renderPlayers = function (playerList) {
-  return playerList.map(player => <p key={player._id}>{player.name} has {player.score} point(s)</p>);
 
-  // const numbers = [{ val: 1 }, { val: 2 }, { val: 3 }, { val: 101 }];
-  // const newNumbers = numbers.map(number => <p key={number.val}>{number.val}</p>);
-  // console.log(newNumbers);
-  // return [<p key="1">1</p>, <p key="2">2</p>, <p key="3">3</p>];
+const renderPlayers = function(playerList) {
+  return playerList.map(player => 
+  <p key={player._id}>{player.name}! has {player.score} point(s)</p>);
+};
+
+const handleSubmit = function(e) {
+  const playerName = e.target.playerName.value;
+  e.preventDefault();
+
+  if (playerName) {
+    e.target.playerName.target = '';
+    Players.insert({
+      name: playerName,
+      score: 44,
+    });
+    // players insert
+  }
 };
 
 // startup을 사용해야 한다. 그래야 dom이 생성이 된 것을 사용한다.
 Meteor.startup(() => {
-  const name = 'JuneKim';
-  const jsx = (
-    /* 주석 */
-    <div>
-      <p>This is from main.js, hello {name}</p>
-      <p>This is my second p.</p>
-      {renderPlayers(players)}
-    </div>
-  );
-  ReactDOM.render(jsx, document.getElementById('app'));
+  Tracker.autorun(() => { // 모두 Tracker.autorun 안에 있어야 한다.
+    // const players = Tracker.autorun(() => Players.find().fetch()); 이건 안됨.
+    // const players = Players.find().fetch(); 아래와 동일하게 작동 ({})
+    const players = Players.find({}, { sort: { name: +1 } });
+    const name = 'JuneKim';
+    const jsx = (
+      /* 주석 */
+      <div>
+        <p>This is from main.js, hello {name}</p>
+        <p>This is my second p.</p>
+        {renderPlayers(players)}
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="playerName" placeholder="Player name" />
+          <button>Add Player</button>
+        </form>
+      </div>
+    );
+    ReactDOM.render(jsx, document.getElementById('app'));
+  });
+  // Insert new doc into the player's collection
+  // client shows top position... DDP issue
+  Players.insert({
+    name: 'rocky',
+    score: 99,
+  });
 });
-
