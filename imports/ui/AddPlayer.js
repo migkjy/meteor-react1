@@ -15,6 +15,7 @@ export default class AddPlayer extends React.Component {
         score: this.props.score,
       });
     }
+    e.target.playerName.value = '';
   }
   render() {
     return (
