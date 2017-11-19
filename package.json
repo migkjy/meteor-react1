@@ -12,7 +12,8 @@
     "npm": "^5.5.1",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.1.1",
+    "react-flip-move": "^2.9.17"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
