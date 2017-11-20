@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'; // import a package from npm
 import { Meteor } from 'meteor/meteor'; // import a package from meteor
 import { Tracker } from 'meteor/tracker';
 
-import { Players } from './../imports/api/players';
+import { Players, calculatePlayerPositions } from './../imports/api/players';
 import App from './../imports/ui/App';
 
 // startup을 사용해야 한다. 그래야 dom이 생성이 된 것을 사용한다.
@@ -13,7 +13,8 @@ import App from './../imports/ui/App';
 Meteor.startup(() => {
   Tracker.autorun(() => { // 모두 Tracker.autorun 안에 있어야 한다.
     const players = Players.find({}, { sort: { score: -1 } }).fetch();
+    const positionedPlayers = calculatePlayerPositions(players);
     const title = 'Score Keep';
-    ReactDOM.render(<App title={title} players={players} />, document.getElementById('app'));
+    ReactDOM.render(<App title={title} players={positionedPlayers} />, document.getElementById('app'));
   });
 });
