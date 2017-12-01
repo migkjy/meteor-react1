@@ -29,5 +29,8 @@
   },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"
+  },
+  "engines": {
+    "node": "v8.8.1"
   }
 }
